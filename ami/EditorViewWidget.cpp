@@ -1,6 +1,8 @@
 #include "EditorViewWidget.h"
 #include "ui_EditorViewWidget.h"
 
+#include "PatternEditorWidget.h"
+
 namespace ami
 {
 	EditorViewWidget::EditorViewWidget(QWidget * parent)

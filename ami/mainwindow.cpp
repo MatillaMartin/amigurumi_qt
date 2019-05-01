@@ -1,5 +1,5 @@
 #include "mainwindow.h"
-#include "PatternLibraryWidget.h"
+#include "LibraryViewWidget.h"
 #include "EditorViewWidget.h"
 
 #include <QtWidgets>
@@ -10,7 +10,7 @@ namespace ami
 	MainWindow::MainWindow()
 		:
 		m_ui(new Ui_MainWindow()),
-		m_patternLibrary(new PatternLibraryWidget({ 128 }, this)),
+		m_patternLibrary(new LibraryViewWidget({ 128 }, this)),
 		m_patternEditor(new EditorViewWidget(this))
 	{
 		// setup designer UI
@@ -34,11 +34,11 @@ namespace ami
 		{
 		case View::LIBRARY:
 			this->setCentralWidget(m_patternLibrary);
-			m_patternLibrary->setHidden(false);
+			m_patternLibrary->show();
 
 		case View::EDITOR:
 			this->setCentralWidget(m_patternEditor);
-			m_patternEditor->setHidden(false);
+			m_patternEditor->show();
 		}
 	}
 }

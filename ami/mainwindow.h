@@ -5,7 +5,7 @@ class Ui_MainWindow;
 
 namespace ami
 {
-	class PatternLibraryWidget;
+	class LibraryViewWidget;
 	class EditorViewWidget;
 
 	class MainWindow : public QMainWindow
@@ -22,7 +22,7 @@ namespace ami
 
 		Ui_MainWindow * m_ui = nullptr;
 
-		PatternLibraryWidget * m_patternLibrary = nullptr;
+		LibraryViewWidget * m_patternLibrary = nullptr;
 		EditorViewWidget * m_patternEditor = nullptr;
 	};
 }

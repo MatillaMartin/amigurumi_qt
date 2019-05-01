@@ -2,14 +2,14 @@
 
 #include <QtWidgets/QWidget>
 
-class Ui_PatternLibraryWidget;
+class Ui_LibraryViewWidget;
 class QListWidgetItem;
 
 namespace ami
 {
 	class PatternIconWidget;
 
-	class PatternLibraryWidget : public QWidget
+	class LibraryViewWidget : public QWidget
 	{
 		Q_OBJECT;
 
@@ -19,7 +19,7 @@ namespace ami
 			int iconSize = 128;
 		};
 
-		PatternLibraryWidget(const Params & params = Params(), QWidget * parent = nullptr);
+		LibraryViewWidget(const Params & params = Params(), QWidget * parent = nullptr);
 
 		void addPattern(QListWidgetItem * icon, const QString & path);
 		void setSize(const unsigned int size);
@@ -30,7 +30,7 @@ namespace ami
 	private:
 		void onItemActivated(QListWidgetItem * item);
 
-		Ui_PatternLibraryWidget * m_ui = nullptr;
+		Ui_LibraryViewWidget * m_ui = nullptr;
 		Params m_params;
 	};
 }

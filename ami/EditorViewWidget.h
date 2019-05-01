@@ -5,10 +5,14 @@
 
 namespace ami
 {
+	class PatternEditorWidget;
+
 	class EditorViewWidget : public QWidget
 	{
+		Q_OBJECT;
+
 	public:
-		EditorViewWidget(QWidget * parent);
+		EditorViewWidget(QWidget * parent = nullptr);
 
 	private:
 		Ui_EditorViewWidget * m_ui = nullptr;

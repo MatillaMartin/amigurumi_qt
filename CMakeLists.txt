@@ -19,20 +19,28 @@ find_package(Qt5Widgets CONFIG REQUIRED)
 set(SOURCES
    ami/main.cpp
    ami/mainwindow.cpp
-   ami/PatternLibraryWidget.cpp
+   ami/LibraryViewWidget.cpp
    ami/EditorViewWidget.cpp
+   ami/PatternEditorWidget.cpp
 )
 
 set(HEADERS
    ami/mainwindow.h
-   ami/PatternLibraryWidget.h
+   ami/LibraryViewWidget.h
    ami/EditorViewWidget.h
+   ami/PatternEditorWidget.h
+   ami/PatternEditorRound.h
 )
 
 set(UIS
 	ami/MainWindow.ui
-	ami/PatternLibraryWidget.ui
+	ami/LibraryViewWidget.ui
 	ami/EditorViewWidget.ui
+	ami/PatternEditorWidget.ui
+)
+
+set(INCLUDES 
+	ami
 )
 
 set(RESOURCES

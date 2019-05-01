@@ -1,0 +1,14 @@
+/* Table is missing header separating lines in Win10 */
+QHeaderView::section{
+	border-top:0px solid #D8D8D8;
+	border-left:0px solid #D8D8D8;
+	border-right:1px solid #D8D8D8;
+	border-bottom: 1px solid #D8D8D8;
+}
+
+QTableCornerButton::section{
+	border-top:0px solid #D8D8D8;
+	border-left:0px solid #D8D8D8;
+	border-right:1px solid #D8D8D8;
+	border-bottom: 1px solid #D8D8D8;
+}
