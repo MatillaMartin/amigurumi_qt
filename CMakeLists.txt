@@ -17,19 +17,22 @@ find_package(Qt5Widgets CONFIG REQUIRED)
 
 # Populate a CMake variable with the sources
 set(SOURCES
-   ami/main.cpp
-   ami/mainwindow.cpp
-   ami/LibraryViewWidget.cpp
-   ami/EditorViewWidget.cpp
-   ami/PatternEditorWidget.cpp
+	ami/main.cpp
+	ami/mainwindow.cpp
+	ami/LibraryViewWidget.cpp
+	ami/EditorViewWidget.cpp
+	ami/PatternEditorWidget.cpp
+	ami/PatternGraph.cpp
 )
 
 set(HEADERS
-   ami/mainwindow.h
-   ami/LibraryViewWidget.h
-   ami/EditorViewWidget.h
-   ami/PatternEditorWidget.h
-   ami/PatternEditorRound.h
+	ami/mainwindow.h
+	ami/LibraryViewWidget.h
+	ami/EditorViewWidget.h
+	ami/PatternEditorWidget.h
+	ami/PatternGraph.h
+	ami/Operation.h
+	ami/Pattern.h
 )
 
 set(UIS
