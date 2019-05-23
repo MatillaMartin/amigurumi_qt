@@ -18,9 +18,7 @@ namespace ami
 
 		setView(View::EDITOR);
 
-		for(int i = 0; i < 20; ++i)
-			//m_patternLibrary->addPattern(new PatternIconWidget(QPixmap(128,128), "Pattern " + QString::number(i) , this));
-			m_patternLibrary->addPattern(new QListWidgetItem(QPixmap(128, 128), "Pattern " + QString::number(i)), "patternpath.ami");
+		m_patternLibrary->load(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)); // load from appdata
 
 	}
 

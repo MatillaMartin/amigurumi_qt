@@ -2,15 +2,14 @@
 #include <map>
 
 #include <QObject>
+#include <QMetaEnum>
 
 namespace ami
 {
-	class PatternGraph;
-	
 	namespace Operation
 	{
 		Q_NAMESPACE
-		enum Type {
+			enum Type {
 			// loop
 			LP,
 			// chain
@@ -35,7 +34,13 @@ namespace ami
 			NONE
 		};
 		Q_ENUM_NS(Type)
+
 	}
 
 	typedef std::vector<Operation::Type> Operations;
+
+	namespace Operation
+	{
+		bool getOperations(const QString & op, unsigned int count, Operations & outOps);
+	}
 }

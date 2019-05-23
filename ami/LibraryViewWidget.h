@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Pattern.h"
+
 #include <QtWidgets/QWidget>
 
 class Ui_LibraryViewWidget;
@@ -8,6 +10,7 @@ class QListWidgetItem;
 namespace ami
 {
 	class PatternIconWidget;
+	class LibraryLoader;
 
 	class LibraryViewWidget : public QWidget
 	{
@@ -19,10 +22,16 @@ namespace ami
 			int iconSize = 128;
 		};
 
-		LibraryViewWidget(const Params & params = Params(), QWidget * parent = nullptr);
+		struct Item
+		{
+			QListWidgetItem * item;
+			std::unique_ptr<Pattern> pattern;
+		};
 
-		void addPattern(QListWidgetItem * icon, const QString & path);
+		LibraryViewWidget(const Params & params = Params(), QWidget * parent = nullptr);
 		void setSize(const unsigned int size);
+		void load(const QString & path);
+		void addPattern(QListWidgetItem * icon, const QString & path);
 
 	signals:
 		void itemActivated(QString path);
@@ -32,5 +41,6 @@ namespace ami
 
 		Ui_LibraryViewWidget * m_ui = nullptr;
 		Params m_params;
+		std::unique_ptr<LibraryLoader> m_loader;
 	};
 }

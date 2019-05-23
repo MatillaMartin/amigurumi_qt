@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
 
 	QApplication app(argc, argv);
 	QCoreApplication::setOrganizationName("Ami");
-	QCoreApplication::setApplicationName("Application Example");
+	QCoreApplication::setApplicationName("Amigurumi");
 	QCoreApplication::setApplicationVersion(QT_VERSION_STR);
 	QCommandLineParser parser;
 	parser.setApplicationDescription(QCoreApplication::applicationName());

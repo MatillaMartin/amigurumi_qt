@@ -10,26 +10,35 @@ namespace ami
 	public:
 		// A pattern consists on a series of rounds
 		// Each round consists a series of operation types
-		typedef Operations Round;
 
-		Pattern()
-		{
-		}
+		Pattern(const QString & name = "", const std::vector<Operations> & rounds = std::vector<Operations>())
+			:
+			m_name(name),
+			m_rounds(rounds)
+		{}
 
-		const std::vector<Round> & getRounds() const {
+		const std::vector<Operations> & getRounds() const {
 			return m_rounds;
 		}
 
-		std::vector<Round> & getRounds() {
+		std::vector<Operations> & getRounds() {
 			return m_rounds;
 		}
 
-		void add(const Round & round)
+		void add(const Operations & round)
 		{
 			m_rounds.push_back(round);
 		}
 
+		void setName(const QString & name)
+		{
+			m_name = name;
+		}
+
+		QString name() { return m_name; }
+
 	private:
-		std::vector<Round> m_rounds;
+		QString m_name;
+		std::vector<Operations> m_rounds;
 	};
 }

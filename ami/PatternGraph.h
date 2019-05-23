@@ -10,81 +10,6 @@ namespace ami
 {
 	class Pattern;
 
-	// Define graph operations
-	class GraphOperation
-	{
-	public:
-		virtual void apply(PatternGraph & pattern) const = 0;
-
-		static std::unique_ptr<GraphOperation> getGraphOperation(Operation::Type type);
-	};
-
-	class LoopOperation : public GraphOperation
-	{
-	public:
-		virtual void apply(PatternGraph & pattern) const override;
-
-		// Inherited via GraphOperation
-	};
-
-	class ChainOperation : public GraphOperation
-	{
-	public:
-		virtual void apply(PatternGraph & pattern) const override;
-	};
-
-	class SingleCrochetOperation : public GraphOperation
-	{
-	public:
-		virtual void apply(PatternGraph & pattern) const override;
-	};
-
-	class IncreaseOperation : public GraphOperation
-	{
-	public:
-		virtual void apply(PatternGraph & pattern) const override;
-	};
-
-	class DecreaseOperation : public GraphOperation
-	{
-	public:
-		virtual void apply(PatternGraph & pattern) const override;
-	};
-
-	class MagicRingOperation : public GraphOperation
-	{
-	public:
-		virtual void apply(PatternGraph & pattern) const override;
-	};
-
-	class SlipStitchOperation : public GraphOperation
-	{
-	public:
-		virtual void apply(PatternGraph & pattern) const override;
-	};
-
-	class JoinOperation : public GraphOperation
-	{
-	public:
-		JoinOperation(int from, int with) : from(from), with(with) {}
-
-		virtual void apply(PatternGraph & pattern) const override;
-
-		int from, with;
-	};
-
-	class FinishOffOperation : public GraphOperation
-	{
-	public:
-		virtual void apply(PatternGraph & pattern) const override;
-	};
-
-	class SkipOperation : public GraphOperation
-	{
-	public:
-		virtual void apply(PatternGraph & pattern) const override;
-	};
-
 	// Graph class
 	class PatternGraph
 	{
@@ -226,5 +151,80 @@ namespace ami
 		std::vector<Joint> m_joints;
 		std::vector<Face> m_faces;
 		std::deque<int> m_outline;
+	};
+
+	// Define graph operations
+	class GraphOperation
+	{
+	public:
+		virtual void apply(PatternGraph & pattern) const = 0;
+
+		static std::unique_ptr<GraphOperation> getGraphOperation(Operation::Type type);
+	};
+
+	class LoopOperation : public GraphOperation
+	{
+	public:
+		virtual void apply(PatternGraph & pattern) const override;
+
+		// Inherited via GraphOperation
+	};
+
+	class ChainOperation : public GraphOperation
+	{
+	public:
+		virtual void apply(PatternGraph & pattern) const override;
+	};
+
+	class SingleCrochetOperation : public GraphOperation
+	{
+	public:
+		virtual void apply(PatternGraph & pattern) const override;
+	};
+
+	class IncreaseOperation : public GraphOperation
+	{
+	public:
+		virtual void apply(PatternGraph & pattern) const override;
+	};
+
+	class DecreaseOperation : public GraphOperation
+	{
+	public:
+		virtual void apply(PatternGraph & pattern) const override;
+	};
+
+	class MagicRingOperation : public GraphOperation
+	{
+	public:
+		virtual void apply(PatternGraph & pattern) const override;
+	};
+
+	class SlipStitchOperation : public GraphOperation
+	{
+	public:
+		virtual void apply(PatternGraph & pattern) const override;
+	};
+
+	class JoinOperation : public GraphOperation
+	{
+	public:
+		JoinOperation(int from, int with) : from(from), with(with) {}
+
+		virtual void apply(PatternGraph & pattern) const override;
+
+		int from, with;
+	};
+
+	class FinishOffOperation : public GraphOperation
+	{
+	public:
+		virtual void apply(PatternGraph & pattern) const override;
+	};
+
+	class SkipOperation : public GraphOperation
+	{
+	public:
+		virtual void apply(PatternGraph & pattern) const override;
 	};
 }

@@ -330,7 +330,7 @@ namespace ami
 		auto & it = operationFactory.find(type);
 		if (it != operationFactory.end())
 		{
-			return it->second(); // run command
+			return it->second(); // return unique_ptr
 		}
 		else
 		{

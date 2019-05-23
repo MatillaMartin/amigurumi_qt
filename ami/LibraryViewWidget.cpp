@@ -1,8 +1,10 @@
 #include "LibraryViewWidget.h"
 #include "Ui_LibraryViewWidget.h"
+#include "LibraryLoader.h"
 
 #include <QtWidgets/QAction>
 #include <QtWidgets/QListWidget>
+#include <QFileInfo>
 
 namespace ami
 {
@@ -10,7 +12,8 @@ namespace ami
 		:
 		QWidget(parent),
 		m_ui(new Ui_LibraryViewWidget()),
-		m_params(params)
+		m_params(params),
+		m_loader(std::make_unique<LibraryLoader>())
 	{
 		m_ui->setupUi(this);
 		setSize(m_params.iconSize);
@@ -28,6 +31,16 @@ namespace ami
 	void LibraryViewWidget::setSize(const unsigned int size)
 	{
 		m_params.iconSize = size;
+	}
+
+	void LibraryViewWidget::load(const QString & path)
+	{
+		auto files = m_loader->getFiles(path);
+		for (auto & file : files)
+		{
+			QFileInfo fileInfo(file);
+			addPattern(new QListWidgetItem(QPixmap(128, 128), fileInfo.baseName()), file);
+		}
 	}
 
 
