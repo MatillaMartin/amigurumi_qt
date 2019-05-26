@@ -3,6 +3,7 @@
 #include <vector>
 #include <list>
 #include <deque>
+#include <memory>
 
 #include "Operation.h"
 

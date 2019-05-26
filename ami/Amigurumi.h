@@ -4,7 +4,8 @@
 #include "PatternGraph.h"
 #include <map>
 #include <set>
-#include <QtXml/QDom.h>
+#include <QtXml>
+#include <memory>
 
 namespace ami
 {
@@ -46,7 +47,7 @@ namespace ami
 		/// Returns specified pattern if found
 		bool pattern(const QString & pattern, PatternGraph & outPattern) 
 		{ 
-			auto & it = m_patterns.find(pattern);
+			auto it = m_patterns.find(pattern);
 			if (it != m_patterns.end())
 			{
 				outPattern = it->second;

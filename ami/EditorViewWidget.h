@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QWidget>
-#include "Ui_EditorViewWidget.h"
+#include "ui_EditorViewWidget.h"
 
 namespace ami
 {

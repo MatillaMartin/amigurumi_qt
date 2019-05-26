@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Pattern.h"
-
+#include <memory>
 #include <QtWidgets/QWidget>
 
 class Ui_LibraryViewWidget;
@@ -28,7 +28,8 @@ namespace ami
 			std::unique_ptr<Pattern> pattern;
 		};
 
-		LibraryViewWidget(const Params & params = Params(), QWidget * parent = nullptr);
+		LibraryViewWidget(const Params & params = {128}, QWidget * parent = nullptr);
+		~LibraryViewWidget();
 		void setSize(const unsigned int size);
 		void load(const QString & path);
 		void addPattern(QListWidgetItem * icon, const QString & path);

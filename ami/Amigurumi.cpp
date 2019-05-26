@@ -98,7 +98,7 @@ namespace ami
 
 		std::unique_ptr<Command> command;
 
-		auto & it = commandFactory.find(type.toStdString());
+		auto it = commandFactory.find(type.toStdString());
 		if (it != commandFactory.end())
 		{
 			command = std::move(it->second(data)); // run command

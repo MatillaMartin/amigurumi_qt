@@ -1,5 +1,5 @@
 #include "LibraryViewWidget.h"
-#include "Ui_LibraryViewWidget.h"
+#include "ui_LibraryViewWidget.h"
 #include "LibraryLoader.h"
 
 #include <QtWidgets/QAction>
@@ -19,7 +19,8 @@ namespace ami
 		setSize(m_params.iconSize);
 		connect(m_ui->listWidget, &QListWidget::itemActivated, this, &LibraryViewWidget::onItemActivated);
 	}
-
+	
+	LibraryViewWidget::~LibraryViewWidget(){}
 
 	void LibraryViewWidget::addPattern(QListWidgetItem * icon, const QString & path)
 	{

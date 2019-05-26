@@ -67,7 +67,7 @@
   <customwidget>
    <class>ami::PatternEditorWidget</class>
    <extends>QTableWidget</extends>
-   <header>patterneditorwidget.h</header>
+   <header>PatternEditorWidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

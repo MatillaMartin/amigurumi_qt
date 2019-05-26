@@ -327,7 +327,7 @@ namespace ami
 			{ Operation::Type::SLST,	[]() { return std::make_unique<SlipStitchOperation>(); } },
 		};
 
-		auto & it = operationFactory.find(type);
+		auto it = operationFactory.find(type);
 		if (it != operationFactory.end())
 		{
 			return it->second(); // return unique_ptr
