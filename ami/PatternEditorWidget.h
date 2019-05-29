@@ -1,4 +1,5 @@
 #pragma once
+#include "Pattern.h"
 
 #include <QtWidgets/QTableWidget>
 
@@ -14,7 +15,7 @@ namespace ami
 	public slots:
 		void addRound();
 		void removeRound(unsigned int index);
-
+		std::unique_ptr<Pattern> pattern();
 
 	private:
 		void updateRoundHeaders();

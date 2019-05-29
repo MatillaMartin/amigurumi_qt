@@ -14,7 +14,7 @@ namespace ami
 			auto metaEnum = QMetaEnum::fromType<Operation::Type>();
 			int enumIndex = metaEnum.keyToValue(op.toStdString().c_str());
 
-			if (enumIndex > metaEnum.keyCount())
+			if (enumIndex < metaEnum.keyCount())
 			{
 				Operation::Type opType = static_cast<Operation::Type>(enumIndex);
 				outOps.insert(outOps.end(), count, opType);

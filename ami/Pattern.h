@@ -11,9 +11,8 @@ namespace ami
 		// A pattern consists on a series of rounds
 		// Each round consists a series of operation types
 
-		Pattern(const QString & name = "", const std::vector<Operations> & rounds = std::vector<Operations>())
+		Pattern(const std::vector<Operations> & rounds = std::vector<Operations>())
 			:
-			m_name(name),
 			m_rounds(rounds)
 		{}
 
@@ -30,15 +29,7 @@ namespace ami
 			m_rounds.push_back(round);
 		}
 
-		void setName(const QString & name)
-		{
-			m_name = name;
-		}
-
-		QString name() { return m_name; }
-
 	private:
-		QString m_name;
 		std::vector<Operations> m_rounds;
 	};
 }
