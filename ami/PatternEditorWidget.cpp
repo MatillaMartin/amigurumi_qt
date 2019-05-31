@@ -1,4 +1,5 @@
 #include "PatternEditorWidget.h"
+#include "PatternEditorItem.h"
 
 #include <QtWidgets/QHeaderView>
 #include <QApplication>
@@ -13,6 +14,7 @@ namespace ami
 	{
 		setColumnCount(36);
 		setRowCount(36);
+		setItemPrototype(new PatternEditorItem);
 
 		updateRoundHeaders();
 		resizeColumnsToContents();
@@ -38,20 +40,19 @@ namespace ami
 	{
 		std::unique_ptr<Pattern> pattern = std::make_unique<Pattern>();
 
-		int nRows = this->rowCount();
-		int nCols = this->columnCount();
-
-		for (int row = 0; row < nRows; ++row)
+		for (int row = 0; row < this->rowCount(); ++row)
 		{
 			Operations round;
-			for (int col = 0; col < nCols; ++col)
+			for (int col = 0; col < this->columnCount(); ++col)
 			{
 				auto item = this->item(row, col);
 				if (item)
 				{
-					Operations ops;
-					Operation::getOperations(item->text(), 1, ops);
-					round.insert(round.begin(), ops.begin(), ops.end());
+					Operation::Type op;
+					if (Operation::getOperation(item->text(), op))
+					{
+						round.push_back(op);
+					}
 				}
 			}
 
@@ -62,6 +63,11 @@ namespace ami
 		}
 
 		return pattern;
+	}
+
+	PatternEditorItem * PatternEditorWidget::item(int row, int column)
+	{
+		return static_cast<PatternEditorItem*>(QTableWidget::item(row, column));
 	}
 
 	void PatternEditorWidget::updateRoundHeaders()
@@ -92,14 +98,12 @@ namespace ami
 				if (row < rowCount() && column < columnCount())
 				{
 					auto * cell = item(row, column);
-					if (cell)
+					if (!cell)
 					{
-						cell->setText(cellText);
+						cell = new PatternEditorItem();
+						setItem(row, column, cell);
 					}
-					else
-					{
-						setItem(row, column, new QTableWidgetItem(cellText));
-					}
+					cell->setText(cellText);
 				}
 				++column;
 			}
@@ -147,8 +151,9 @@ namespace ami
 	{
 		for (auto * cell : selectedItems())
 		{
-			cell->setText("");
+			// cast to our custom Item
+			PatternEditorItem * item = static_cast<PatternEditorItem*>(cell);
+			item->setText("");
 		}
 	}
-
 }

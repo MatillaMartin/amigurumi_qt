@@ -2,9 +2,12 @@
 #include "Pattern.h"
 
 #include <QtWidgets/QTableWidget>
+#include <QtWidgets/QItemDelegate>
 
 namespace ami
 {
+	class PatternEditorItem;
+
 	class PatternEditorWidget : public QTableWidget
 	{
 		Q_OBJECT;
@@ -18,6 +21,8 @@ namespace ami
 		std::unique_ptr<Pattern> pattern();
 
 	private:
+		PatternEditorItem * item(int row, int column);
+
 		void updateRoundHeaders();
 		void paste();
 		void copy();

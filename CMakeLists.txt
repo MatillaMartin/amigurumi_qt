@@ -29,6 +29,7 @@ set(SOURCES
 	ami/main.cpp
 	ami/mainwindow.cpp
 	ami/Operation.cpp
+	ami/PatternEditorItem.cpp
 	ami/PatternEditorWidget.cpp
 	ami/PatternGraph.cpp
 )
@@ -40,6 +41,7 @@ set(HEADERS
 	ami/LibraryLoader.h
 	ami/LibraryViewWidget.h
 	ami/Operation.h
+	ami/PatternEditorItem.h
 	ami/PatternEditorWidget.h
 	ami/PatternGraph.h
 	ami/Pattern.h

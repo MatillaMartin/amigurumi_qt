@@ -139,10 +139,10 @@ namespace ami
 					if (!type.isEmpty() && count > 0)
 					{
 						// get operations
-						Operations ops;
-						if (Operation::getOperations(type, count, ops))
+						Operation::Type op;
+						if (Operation::getOperation(type, op))
 						{
-							roundOps.insert(roundOps.end(), ops.begin(), ops.end());
+							roundOps.insert(roundOps.end(), count, op);
 						}
 					}
 					else

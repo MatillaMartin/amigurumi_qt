@@ -41,6 +41,6 @@ namespace ami
 
 	namespace Operation
 	{
-		bool getOperations(const QString & op, unsigned int count, Operations & outOps);
+		bool getOperation(const QString & op, Operation::Type & outOp);
 	}
 }
