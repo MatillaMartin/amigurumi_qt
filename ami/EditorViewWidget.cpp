@@ -5,6 +5,8 @@
 #include "PatternGraph.h"
 
 #include <QtWidgets/QPushButton>
+#include <QDebug>
+
 namespace ami
 {
 	EditorViewWidget::EditorViewWidget(QWidget * parent)
@@ -23,8 +25,21 @@ namespace ami
 
 	void EditorViewWidget::onUpdatePattern()
 	{
-		std::unique_ptr<Pattern> pattern (std::move(m_ui->patternEditor->pattern()));
-		
-		m_graph = std::make_unique<PatternGraph>(*pattern.get());
+		Pattern pattern;
+		if (m_ui->patternEditor->pattern(pattern))
+		{
+			try
+			{
+				m_graph = std::make_unique<PatternGraph>(pattern);
+			}
+			catch (const std::runtime_error & ex)
+			{
+				qDebug() << "Could not update pattern: " << ex.what();
+			}
+		}
+		else
+		{
+			qDebug() << "Invalid pattern";
+		}
 	}
 }

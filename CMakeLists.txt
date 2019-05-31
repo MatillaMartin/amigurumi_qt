@@ -65,7 +65,8 @@ set(RESOURCES
 qt5_wrap_ui( QT_UIS ${UIS} )
 qt5_add_resources(QT_RESOURCES ${RESOURCES})
 
-add_executable(amigurumi WIN32 ${SOURCES} ${HEADERS} ${QT_RESOURCES} ${QT_UIS})
+# too remove console add WIN32 to add_executable
+add_executable(amigurumi ${SOURCES} ${HEADERS} ${QT_RESOURCES} ${QT_UIS})
 include_directories(amigurumi ${INCLUDES})
 target_link_libraries(amigurumi Qt5::Widgets Qt5::Core Qt5::Gui Qt5::Xml)
 

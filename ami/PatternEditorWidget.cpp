@@ -36,10 +36,9 @@ namespace ami
 		removeRow(index);
 	}
 
-	std::unique_ptr<Pattern> PatternEditorWidget::pattern()
+	bool PatternEditorWidget::pattern(Pattern & outPattern)
 	{
-		std::unique_ptr<Pattern> pattern = std::make_unique<Pattern>();
-
+		outPattern.clear();
 		for (int row = 0; row < this->rowCount(); ++row)
 		{
 			Operations round;
@@ -49,20 +48,24 @@ namespace ami
 				if (item)
 				{
 					Operation::Type op;
-					if (Operation::getOperation(item->text(), op))
+					if (item->operation(op))
 					{
 						round.push_back(op);
+					}
+					else
+					{
+						return false;
 					}
 				}
 			}
 
 			if (!round.empty())
 			{
-				pattern->add(round);
+				outPattern.add(round);
 			}
 		}
 
-		return pattern;
+		return true;
 	}
 
 	PatternEditorItem * PatternEditorWidget::item(int row, int column)

@@ -11,6 +11,39 @@ namespace ami
 {
 	class Pattern;
 
+	class PatternInvalidException : public std::runtime_error
+	{
+	public:
+		PatternInvalidException(int round, int operation)
+			:
+			std::runtime_error("Round " + std::to_string(round) + ", Operation " + std::to_string(operation) + " failed"),
+			m_round(round), 
+			m_operation(operation)
+		{}
+
+		int round() { return m_round; }
+		int operation() { return m_operation; }
+
+	private:
+		int m_round = -1;
+		int m_operation = -1;
+	};
+
+	class RoundStitchesCountException : public std::runtime_error
+	{
+	public:
+		RoundStitchesCountException(int round, int availableStitches, int requiredStitches)
+			:
+			std::runtime_error("Round " + std::to_string(round) + " requires " + std::to_string(requiredStitches) + " stitches, available: " + std::to_string(availableStitches)),
+			m_round(round)
+		{}
+
+		int round() { return m_round; }
+
+	private:
+		int m_round = -1;
+	};
+
 	// Graph class
 	class PatternGraph
 	{
@@ -104,6 +137,8 @@ namespace ami
 
 		bool popOutline(unsigned int n = 1);
 
+		int getAvailableStitches() { return m_outline.size() - 1; }
+
 		void addEdge(int from, int to, float distance);
 
 		void addJoint(int from, int to);
@@ -158,53 +193,59 @@ namespace ami
 	class GraphOperation
 	{
 	public:
-		virtual void apply(PatternGraph & pattern) const = 0;
-
+		virtual bool apply(PatternGraph & pattern) const = 0;
+		virtual int consumedStitches() const = 0;
 		static std::unique_ptr<GraphOperation> getGraphOperation(Operation::Type type);
 	};
 
 	class LoopOperation : public GraphOperation
 	{
 	public:
-		virtual void apply(PatternGraph & pattern) const override;
-
+		virtual bool apply(PatternGraph & pattern) const override;
+		virtual int consumedStitches() const override { return 0; };
 		// Inherited via GraphOperation
 	};
 
 	class ChainOperation : public GraphOperation
 	{
 	public:
-		virtual void apply(PatternGraph & pattern) const override;
+		virtual bool apply(PatternGraph & pattern) const override;
+		virtual int consumedStitches() const override { return 0; };
 	};
 
 	class SingleCrochetOperation : public GraphOperation
 	{
 	public:
-		virtual void apply(PatternGraph & pattern) const override;
+		virtual bool apply(PatternGraph & pattern) const override;
+		virtual int consumedStitches() const override { return 1; };
 	};
 
 	class IncreaseOperation : public GraphOperation
 	{
 	public:
-		virtual void apply(PatternGraph & pattern) const override;
+		virtual bool apply(PatternGraph & pattern) const override;
+		virtual int consumedStitches() const override { return 0; };
 	};
 
 	class DecreaseOperation : public GraphOperation
 	{
 	public:
-		virtual void apply(PatternGraph & pattern) const override;
+		virtual bool apply(PatternGraph & pattern) const override;
+		virtual int consumedStitches() const override { return 2; };
 	};
 
 	class MagicRingOperation : public GraphOperation
 	{
 	public:
-		virtual void apply(PatternGraph & pattern) const override;
+		virtual bool apply(PatternGraph & pattern) const override;
+		virtual int consumedStitches() const override { return 0; };
 	};
 
 	class SlipStitchOperation : public GraphOperation
 	{
 	public:
-		virtual void apply(PatternGraph & pattern) const override;
+		virtual bool apply(PatternGraph & pattern) const override;
+		virtual int consumedStitches() const override { return 1; };
 	};
 
 	class JoinOperation : public GraphOperation
@@ -212,7 +253,8 @@ namespace ami
 	public:
 		JoinOperation(int from, int with) : from(from), with(with) {}
 
-		virtual void apply(PatternGraph & pattern) const override;
+		virtual bool apply(PatternGraph & pattern) const override;
+		virtual int consumedStitches() const override { return 1; };
 
 		int from, with;
 	};
@@ -220,12 +262,14 @@ namespace ami
 	class FinishOffOperation : public GraphOperation
 	{
 	public:
-		virtual void apply(PatternGraph & pattern) const override;
+		virtual bool apply(PatternGraph & pattern) const override;
+		virtual int consumedStitches() const override { return 0; };
 	};
 
 	class SkipOperation : public GraphOperation
 	{
 	public:
-		virtual void apply(PatternGraph & pattern) const override;
+		virtual bool apply(PatternGraph & pattern) const override;
+		virtual int consumedStitches() const override { return 1; };
 	};
 }

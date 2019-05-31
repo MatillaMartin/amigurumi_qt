@@ -18,7 +18,7 @@ namespace ami
 	public slots:
 		void addRound();
 		void removeRound(unsigned int index);
-		std::unique_ptr<Pattern> pattern();
+		bool pattern(Pattern & outPattern);
 
 	private:
 		PatternEditorItem * item(int row, int column);

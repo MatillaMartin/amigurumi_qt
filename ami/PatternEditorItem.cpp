@@ -42,6 +42,12 @@ namespace ami
 		return m_isValid;
 	}
 
+	void PatternEditorItem::setValid(bool valid) 
+	{ 
+		m_isValid = valid;
+		updateUI(); 
+	}
+
 	void PatternEditorItem::updateUI()
 	{
 		if (m_isValid)

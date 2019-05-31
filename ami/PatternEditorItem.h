@@ -13,6 +13,7 @@ namespace ami
 		void setData(int role, const QVariant &value);
 		bool operation(Operation::Type & outOp);
 		bool isValid() { return m_isValid; }
+		void setValid(bool valid);
 
 	private:
 		void updateUI();

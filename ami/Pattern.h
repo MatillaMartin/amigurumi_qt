@@ -29,6 +29,11 @@ namespace ami
 			m_rounds.push_back(round);
 		}
 
+		void clear()
+		{
+			m_rounds.clear();
+		}
+
 	private:
 		std::vector<Operations> m_rounds;
 	};

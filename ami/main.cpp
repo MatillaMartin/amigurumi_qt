@@ -2,13 +2,14 @@
 #include <QCommandLineParser>
 #include <QCommandLineOption>
 #include <QFile>
-
+#include <QDebug>
 #include "mainwindow.h"
 
 using namespace ami;
 
 int main(int argc, char *argv[])
 {
+	qDebug() << "Starting application";
 	Q_INIT_RESOURCE(application);
 
 	QApplication app(argc, argv);
@@ -23,6 +24,7 @@ int main(int argc, char *argv[])
 	parser.process(app);
 
 	// read stylesheet from resource or from folder
+	qDebug() << "Loading stylesheet";
 	QFile file(":/stylesheet.qss");
 	file.open(QFile::ReadOnly);
 	QString style(file.readAll());

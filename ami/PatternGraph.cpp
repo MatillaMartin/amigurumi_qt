@@ -6,38 +6,59 @@
 #include <functional>
 
 #include <QMetaEnum>
+#include <QDebug>
 
 namespace ami
 {
 	PatternGraph::PatternGraph()
-	{}
+	{
+		addNode({ Operation::Type::NONE });
+	}
 
 	PatternGraph::PatternGraph(const Pattern & pattern)
+		:
+		PatternGraph()
 	{
 		append(pattern);
 	}
 
 	void PatternGraph::append(const Pattern & pattern)
 	{
-		unsigned int roundIndex = 0;
+		unsigned int roundIndex = 1;
 		for (auto & round : pattern.getRounds())
 		{
-			unsigned int operationIndex = 0;
+			// check if round is possible
+			int availableStitches = getAvailableStitches();
+			int requiredStitches = 0;
 			for (auto & op : round)
 			{
-				try
+				std::unique_ptr<GraphOperation> operation = GraphOperation::getGraphOperation(op);
+				if (operation)
 				{
-					GraphOperation::getGraphOperation(op)->apply(*this);
+					requiredStitches += operation->consumedStitches();
 				}
-				catch (std::runtime_error & e)
+			}
+			if (requiredStitches > availableStitches)
+			{
+				throw RoundStitchesCountException(roundIndex, availableStitches, requiredStitches);
+			}
+
+			unsigned int operationIndex = 1;
+			for (auto & op : round)
+			{
+				std::unique_ptr<GraphOperation> operation = GraphOperation::getGraphOperation(op);
+				if (operation)
 				{
-					std::stringstream ss;
-					ss << "Round " << std::to_string(roundIndex) << ", Operation " << QString::number(operationIndex).toStdString() << " failed: " << e.what();
-					throw std::runtime_error(ss.str());
+					if (!operation->apply(*this))
+					{
+						// fails to apply operation, invalid pattern
+						throw PatternInvalidException(roundIndex, operationIndex);
+					}
 				}
 
 				operationIndex++;
 			}
+
 			roundIndex++;
 		}
 	}
@@ -49,7 +70,7 @@ namespace ami
 
 	bool PatternGraph::popOutline(unsigned int n)
 	{
-		if (m_outline.size() < n)
+		if (getAvailableStitches() < n)
 		{
 			return false;
 		}
@@ -173,7 +194,7 @@ namespace ami
 		return pattern;
 	}
 
-	void LoopOperation::apply(PatternGraph & pattern) const
+	bool LoopOperation::apply(PatternGraph & pattern) const
 	{
 		PatternGraph::NodeIterator node_it = pattern.addNode(PatternGraph::NodeData{ Operation::Type::LP });
 		PatternGraph::Node & node = node_it.node();
@@ -182,19 +203,21 @@ namespace ami
 		//node.under = node.id;
 		node.last = node.id;
 		node.next = node.id;
+
+		return true;
 	}
 
-	void ChainOperation::apply(PatternGraph & pattern) const
+	bool ChainOperation::apply(PatternGraph & pattern) const
 	{
 		PatternGraph::NodeIterator node_it = pattern.addNode(PatternGraph::NodeData{ Operation::Type::CH });
 		PatternGraph::Node & node = node_it.node();
 
 		pattern.addEdge(node.id, node.last, 1.f); // connect next node with our node
 
-		// add node to back too! we want to be able to use it twice
+		return true;
 	}
 
-	void SingleCrochetOperation::apply(PatternGraph & pattern) const
+	bool SingleCrochetOperation::apply(PatternGraph & pattern) const
 	{
 		PatternGraph::NodeIterator node_it = pattern.addNode(PatternGraph::NodeData{ Operation::Type::SC });
 		PatternGraph::Node & node = node_it.node();
@@ -202,7 +225,8 @@ namespace ami
 		PatternGraph::NodeIterator under = pattern.back();
 		if (!pattern.popOutline()) // use up a node
 		{
-			throw std::runtime_error("Not enough points to apply SC");
+			qDebug() << "Not enough points to apply Single Crochet";
+			return false;
 		}
 		PatternGraph::NodeIterator under2 = pattern.back();
 
@@ -212,9 +236,11 @@ namespace ami
 
 		pattern.addFace(node.id, node.last, under.id);
 		pattern.addFace(node.id, under.id, under2.id);
+
+		return true;
 	}
 
-	void IncreaseOperation::apply(PatternGraph & pattern) const
+	bool IncreaseOperation::apply(PatternGraph & pattern) const
 	{
 		PatternGraph::NodeIterator node_it = pattern.addNode(PatternGraph::NodeData{ Operation::Type::INC });
 		PatternGraph::Node & node = node_it.node();
@@ -225,9 +251,11 @@ namespace ami
 		pattern.addEdge(node.id, under.id, 1.f);
 
 		pattern.addFace(node.id, node.last, under.id);
+
+		return true;
 	}
 
-	void DecreaseOperation::apply(PatternGraph & pattern) const
+	bool DecreaseOperation::apply(PatternGraph & pattern) const
 	{
 		PatternGraph::NodeIterator node_it = pattern.addNode(PatternGraph::NodeData{ Operation::Type::DEC });
 		PatternGraph::Node & node = node_it.node();
@@ -235,12 +263,14 @@ namespace ami
 		PatternGraph::NodeIterator under = pattern.back();
 		if (!pattern.popOutline()) // use up a node
 		{
-			throw std::runtime_error("Not enough points to apply DEC");
+			qDebug() << "Not enough points to apply Decrease";
+			return false;
 		}
 		PatternGraph::NodeIterator under2 = pattern.back();
 		if (!pattern.popOutline()) // use up a node
 		{
-			throw std::runtime_error("Not enough points to apply DEC");
+			qDebug() << "Not enough points to apply Decrease";
+			return false;
 		}
 		PatternGraph::NodeIterator under3 = pattern.back();
 
@@ -252,44 +282,50 @@ namespace ami
 		pattern.addFace(node.id, node.last, under.id);
 		pattern.addFace(node.id, under.id, under2.id);
 		pattern.addFace(node.id, under2.id, under3.id);
+
+		return true;
 	}
 
-	void MagicRingOperation::apply(PatternGraph & pattern) const
+	bool MagicRingOperation::apply(PatternGraph & pattern) const
 	{
 		IncreaseOperation incOp;
-		incOp.apply(pattern);
+		return incOp.apply(pattern);
 	}
 
-	void SlipStitchOperation::apply(PatternGraph & pattern) const
+	bool SlipStitchOperation::apply(PatternGraph & pattern) const
 	{
 		// this operation does not add a new vertex
 		PatternGraph::NodeIterator under = pattern.back();
 		if (!pattern.popOutline()) // use up a node
 		{
-			throw std::runtime_error("Not enough points to apply SLST");
+			qDebug() << "Not enough points to apply Slip Stitch";
+			return false;
 		}
 		PatternGraph::NodeIterator under2 = pattern.back();
 		PatternGraph::NodeIterator node = pattern.front();
 		pattern.addEdge(node.id, under2.id, 1.f);
 		pattern.addFace(node.id, under.id, under2.id);
+
+		return true;
 	}
 
-	void JoinOperation::apply(PatternGraph & pattern) const
+	bool JoinOperation::apply(PatternGraph & pattern) const
 	{
 		// this operation does not add a new vertex, just joins them
 		pattern.addJoint(from, with);
+		return true;
 	}
 
-	void FinishOffOperation::apply(PatternGraph & pattern) const
+	bool FinishOffOperation::apply(PatternGraph & pattern) const
 	{
 		// this operation does not add a new vertex
 		PatternGraph::NodeIterator under = pattern.back();
 		if (!pattern.popOutline()) // use up a node
 		{
-			throw std::runtime_error("Not enough points to apply FO");
+			qDebug() << "Not enough points to apply Finish Off";
+			return false;
 		}
 		PatternGraph::NodeIterator under2 = pattern.back();
-
 
 		PatternGraph::NodeIterator nextClose = under2;
 		PatternGraph::NodeIterator lastClose = pattern.front();
@@ -299,17 +335,26 @@ namespace ami
 			pattern.addJoint(nextClose.id, lastClose.id);
 			if (!pattern.popOutline()) // use up a node
 			{
-				throw std::runtime_error("Not enough points to apply FO");
+				qDebug() << "Not enough points to apply Finish Off";
+				return false;
 			}
 
 			nextClose = pattern.back(); // advance next
 			lastClose = lastClose.last(); // go back in last
 		}
+
+		return true;
 	}
 
-	void SkipOperation::apply(ami::PatternGraph & pattern) const
+	bool SkipOperation::apply(ami::PatternGraph & pattern) const
 	{
-		// does nothing
+		// does nothing, just uses up a node
+		if (!pattern.popOutline()) // use up a node
+		{
+			qDebug() << "Not enough points to apply Skip";
+			return false;
+		}
+		return true;
 	}
 
 	std::unique_ptr<GraphOperation> GraphOperation::getGraphOperation(Operation::Type type)
@@ -325,6 +370,7 @@ namespace ami
 			{ Operation::Type::SC,		[]() { return std::make_unique<SingleCrochetOperation>(); } },
 			{ Operation::Type::SKIP,	[]() { return std::make_unique<SkipOperation>(); } },
 			{ Operation::Type::SLST,	[]() { return std::make_unique<SlipStitchOperation>(); } },
+			{ Operation::Type::NONE,	[]() { return std::unique_ptr<GraphOperation>(); } },
 		};
 
 		auto it = operationFactory.find(type);
@@ -332,9 +378,9 @@ namespace ami
 		{
 			return it->second(); // return unique_ptr
 		}
-		else
-		{
-			throw std::runtime_error("Can't find graph operation for " + std::string(QMetaEnum::fromType<Operation::Type>().valueToKey(type)) );
-		}
+
+		// Missing operation
+		assert(false);
+		return std::unique_ptr<GraphOperation>();
 	}
 }
