@@ -32,7 +32,10 @@ namespace ami
 		~LibraryViewWidget();
 		void setSize(const unsigned int size);
 		void load(const QString & path);
-		void addPattern(QListWidgetItem * icon, const QString & path);
+		void addPattern(QListWidgetItem * item, const QString & path);
+
+	public slots:
+		void onCustomContextMenuRequested(const QPoint & pos);
 
 	signals:
 		void itemActivated(QString path);

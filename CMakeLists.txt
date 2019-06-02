@@ -51,7 +51,6 @@ set(UIS
 	ami/EditorViewWidget.ui
 	ami/LibraryViewWidget.ui
 	ami/MainWindow.ui
-	ami/PatternEditorWidget.ui
 )
 
 set(INCLUDES 

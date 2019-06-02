@@ -16,7 +16,7 @@ namespace ami
 		// setup designer UI
 		m_ui->setupUi(this);
 
-		setView(View::EDITOR);
+		setView(View::LIBRARY);
 
 		m_patternLibrary->load(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)); // load from appdata
 
@@ -33,10 +33,12 @@ namespace ami
 		case View::LIBRARY:
 			this->setCentralWidget(m_patternLibrary);
 			m_patternLibrary->show();
+			break;
 
 		case View::EDITOR:
 			this->setCentralWidget(m_patternEditor);
 			m_patternEditor->show();
+			break;
 		}
 	}
 }

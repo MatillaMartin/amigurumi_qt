@@ -5,6 +5,7 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QListWidget>
 #include <QFileInfo>
+#include <QtWidgets/QMenu>
 
 namespace ami
 {
@@ -18,14 +19,18 @@ namespace ami
 		m_ui->setupUi(this);
 		setSize(m_params.iconSize);
 		connect(m_ui->listWidget, &QListWidget::itemActivated, this, &LibraryViewWidget::onItemActivated);
+
+		m_ui->listWidget->setContextMenuPolicy(Qt::ContextMenuPolicy::CustomContextMenu);
+		connect(m_ui->listWidget, &QListWidget::customContextMenuRequested, this, &LibraryViewWidget::onCustomContextMenuRequested);
+
 	}
 	
 	LibraryViewWidget::~LibraryViewWidget(){}
 
-	void LibraryViewWidget::addPattern(QListWidgetItem * icon, const QString & path)
+	void LibraryViewWidget::addPattern(QListWidgetItem * item, const QString & path)
 	{
-		icon->setData(Qt::UserRole, path);
-		m_ui->listWidget->addItem(icon);
+		item->setData(Qt::UserRole, path);
+		m_ui->listWidget->addItem(item);
 	}
 
 
@@ -49,4 +54,13 @@ namespace ami
 	{
 		emit itemActivated(item->data(Qt::UserRole).toString());
 	}
+
+	void LibraryViewWidget::onCustomContextMenuRequested(const QPoint & pos)
+	{
+		QMenu *menu = new QMenu(this	);
+		menu->addAction(new QAction("Rename", this));
+		menu->addAction(new QAction("Join..", this));
+		menu->popup(m_ui->listWidget->viewport()->mapToGlobal(pos));
+	}
+
 }
