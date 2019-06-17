@@ -7,6 +7,9 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+# Set cmake find_package directory
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
+
 # Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # Instruct CMake to run moc automatically when needed
@@ -19,6 +22,11 @@ set (CMAKE_PREFIX_PATH "C:\\Qt\\5.12.2\\msvc2017_64")
 
 # Find the QtWidgets library
 find_package(Qt5 COMPONENTS Core Widgets Xml REQUIRED)
+
+# Find GLM library
+set(GLM_ROOT_DIR "${CMAKE_CURRENT_LIST_DIR}/thirdparty/glm")
+find_package(GLM REQUIRED)
+
 
 # Populate a CMake variable with the sources
 set(SOURCES
@@ -54,7 +62,7 @@ set(UIS
 )
 
 set(INCLUDES 
-	ami
+	.
 )
 
 set(RESOURCES
@@ -66,7 +74,7 @@ qt5_add_resources(QT_RESOURCES ${RESOURCES})
 
 # too remove console add WIN32 to add_executable
 add_executable(amigurumi ${SOURCES} ${HEADERS} ${QT_RESOURCES} ${QT_UIS})
-include_directories(amigurumi ${INCLUDES})
+target_include_directories(amigurumi PUBLIC ${INCLUDES} ${GLM_INCLUDE_DIRS})
 target_link_libraries(amigurumi Qt5::Widgets Qt5::Core Qt5::Gui Qt5::Xml)
 
 set (QtDLLs $<TARGET_FILE:Qt5::Widgets> $<TARGET_FILE:Qt5::Core> $<TARGET_FILE:Qt5::Gui> $<TARGET_FILE:Qt5::Xml>)
