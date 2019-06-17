@@ -1,5 +1,5 @@
-#include "Amigurumi.h"
-#include "Operation.h"
+#include "ami/Amigurumi.h"
+#include "ami/Operation.h"
 
 #include <unordered_map>
 #include <iostream>

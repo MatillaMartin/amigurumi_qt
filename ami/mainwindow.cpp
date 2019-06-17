@@ -1,6 +1,6 @@
-#include "mainwindow.h"
-#include "LibraryViewWidget.h"
-#include "EditorViewWidget.h"
+#include "ami/mainwindow.h"
+#include "ami/LibraryViewWidget.h"
+#include "ami/EditorViewWidget.h"
 
 #include <QtWidgets>
 #include <ui_MainWindow.h>

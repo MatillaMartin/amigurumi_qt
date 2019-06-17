@@ -1,4 +1,4 @@
-#include "PatternEditorItem.h"
+#include "ami/PatternEditorItem.h"
 
 namespace ami
 {

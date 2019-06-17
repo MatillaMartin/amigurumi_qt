@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Pattern.h"
+#include "ami/Pattern.h"
+
 #include <memory>
 #include <QtWidgets/QWidget>
 

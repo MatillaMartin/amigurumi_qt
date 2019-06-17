@@ -1,8 +1,7 @@
-#include "EditorViewWidget.h"
+#include "ami/EditorViewWidget.h"
 #include "ui_EditorViewWidget.h"
-
-#include "PatternEditorWidget.h"
-#include "PatternGraph.h"
+#include "ami/PatternEditorWidget.h"
+#include "ami/PatternGraph.h"
 
 #include <QtWidgets/QPushButton>
 #include <QDebug>

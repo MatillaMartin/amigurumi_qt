@@ -1,5 +1,5 @@
-#include "PatternGraph.h"
-#include "Pattern.h"
+#include "ami/PatternGraph.h"
+#include "ami/Pattern.h"
 
 #include <sstream>
 #include <unordered_map>

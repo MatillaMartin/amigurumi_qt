@@ -1,5 +1,5 @@
-#include "PatternEditorWidget.h"
-#include "PatternEditorItem.h"
+#include "ami/PatternEditorWidget.h"
+#include "ami/PatternEditorItem.h"
 
 #include <QtWidgets/QHeaderView>
 #include <QApplication>

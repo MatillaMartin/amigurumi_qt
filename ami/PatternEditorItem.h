@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Operation.h"
+#include "ami/Operation.h"
+
 #include <QtWidgets/QTableWidget>
 
 namespace ami

@@ -1,5 +1,5 @@
 #pragma once
-#include "Pattern.h"
+#include "ami/Pattern.h"
 
 #include <QtWidgets/QTableWidget>
 #include <QtWidgets/QItemDelegate>

@@ -40,6 +40,12 @@ set(SOURCES
 	ami/PatternEditorItem.cpp
 	ami/PatternEditorWidget.cpp
 	ami/PatternGraph.cpp
+	ami/GL/GLView.cpp
+	ami/GL/GLMesh.cpp
+	ami/GL/GLCamera.cpp
+	ami/GL/GLCommon.cpp
+	ami/GL/GLNode.cpp
+	ami/GL/GLShader.cpp
 )
 
 set(HEADERS
@@ -53,6 +59,12 @@ set(HEADERS
 	ami/PatternEditorWidget.h
 	ami/PatternGraph.h
 	ami/Pattern.h
+	ami/GL/GLView.h
+	ami/GL/GLMesh.h
+	ami/GL/GLCamera.h
+	ami/GL/GLCommon.h
+	ami/GL/GLNode.h
+	ami/GL/GLShader.h
 )
 
 set(UIS

@@ -1,7 +1,8 @@
 #pragma once
 
-#include "Pattern.h"
-#include "PatternGraph.h"
+#include "ami/Pattern.h"
+#include "ami/PatternGraph.h"
+
 #include <map>
 #include <set>
 #include <QtXml>

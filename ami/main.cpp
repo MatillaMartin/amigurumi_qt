@@ -1,9 +1,11 @@
+
+#include "ami/mainwindow.h"
+
 #include <QApplication>
 #include <QCommandLineParser>
 #include <QCommandLineOption>
 #include <QFile>
 #include <QDebug>
-#include "mainwindow.h"
 
 using namespace ami;
 

@@ -1,11 +1,11 @@
 #pragma once
 
+#include "ami/Operation.h"
+
 #include <vector>
 #include <list>
 #include <deque>
 #include <memory>
-
-#include "Operation.h"
 
 namespace ami
 {

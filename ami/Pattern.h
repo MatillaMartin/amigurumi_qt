@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Operation.h"
+#include "ami/Operation.h"
 #include <vector>
 
 namespace ami

@@ -1,6 +1,6 @@
-#include "LibraryViewWidget.h"
+#include "ami/LibraryViewWidget.h"
 #include "ui_LibraryViewWidget.h"
-#include "LibraryLoader.h"
+#include "ami/LibraryLoader.h"
 
 #include <QtWidgets/QAction>
 #include <QtWidgets/QListWidget>

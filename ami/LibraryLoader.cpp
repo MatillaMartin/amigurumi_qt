@@ -1,4 +1,4 @@
-#include "LibraryLoader.h"
+#include "ami/LibraryLoader.h"
 
 #include <QDir>
 
