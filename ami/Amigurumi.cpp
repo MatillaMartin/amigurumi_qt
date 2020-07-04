@@ -36,7 +36,7 @@ namespace ami
 		return QString("Pattern" + m_patterns.size());
 	}
 
-	Amigurumi Amigurumi::fromFile(const std::string & file)
+	Amigurumi Amigurumi::fromFile(const QString & file)
 	{
 		Amigurumi ami;
 
@@ -46,11 +46,11 @@ namespace ami
 		//The QDomDocument class represents an XML document.
 		QDomDocument data;
 		// Load xml file as raw data
-		QFile f(QString::fromStdString(file));
+		QFile f(file);
 		if (!f.open(QIODevice::ReadOnly))
 		{
 			// Error while loading file
-			throw std::runtime_error("File " + file + " not found");
+			throw std::runtime_error("File " + file.toStdString() + " not found");
 		}
 		// Set data into the QDomDocument before processing
 		data.setContent(&f);

@@ -66,7 +66,7 @@ namespace ami
 		// Adds a command
 		void addCommand(std::unique_ptr<Command> command);
 
-		static Amigurumi fromFile(const std::string & file);
+		static Amigurumi fromFile(const QString & file);
 
 	private:
 		static std::unique_ptr<Command> getCommand(const QString & type, QDomElement & data);

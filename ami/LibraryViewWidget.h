@@ -31,8 +31,9 @@ namespace ami
 		LibraryViewWidget(const Params & params = {128}, QWidget * parent = nullptr);
 		~LibraryViewWidget();
 		void setSize(const unsigned int size);
-		void load(const QString & path);
-		void addPattern(QListWidgetItem * item, const QString & path);
+
+		/// Imports directory or single file
+		void import(const QString & path);
 
 	public slots:
 		void onCustomContextMenuRequested(const QPoint & pos);
@@ -41,6 +42,7 @@ namespace ami
 		void itemActivated(QString path);
 
 	private:
+		void addPattern(QListWidgetItem * item, const QString & path);
 		void onItemActivated(QListWidgetItem * item);
 
 		Ui_LibraryViewWidget * m_ui = nullptr;

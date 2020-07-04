@@ -1,6 +1,7 @@
 #include "LibraryViewWidget.h"
 #include "ui_LibraryViewWidget.h"
 #include "LibraryLoader.h"
+#include "Amigurumi.h"
 
 #include <QtWidgets/QAction>
 #include <QtWidgets/QListWidget>
@@ -27,19 +28,12 @@ namespace ami
 	
 	LibraryViewWidget::~LibraryViewWidget(){}
 
-	void LibraryViewWidget::addPattern(QListWidgetItem * item, const QString & path)
-	{
-		item->setData(Qt::UserRole, path);
-		m_ui->listWidget->addItem(item);
-	}
-
-
 	void LibraryViewWidget::setSize(const unsigned int size)
 	{
 		m_params.iconSize = size;
 	}
 
-	void LibraryViewWidget::load(const QString & path)
+	void LibraryViewWidget::import(const QString & path)
 	{
 		auto files = m_loader->getFiles(path);
 		for (auto & file : files)
@@ -49,18 +43,32 @@ namespace ami
 		}
 	}
 
-
 	void LibraryViewWidget::onItemActivated(QListWidgetItem * item)
 	{
 		emit itemActivated(item->data(Qt::UserRole).toString());
 	}
 
-	void LibraryViewWidget::onCustomContextMenuRequested(const QPoint & pos)
+	void LibraryViewWidget::addPattern(QListWidgetItem * item, const QString & path)
 	{
-		QMenu *menu = new QMenu(this	);
-		menu->addAction(new QAction("Rename", this));
-		menu->addAction(new QAction("Join..", this));
-		menu->popup(m_ui->listWidget->viewport()->mapToGlobal(pos));
+		try
+		{
+			Amigurumi ami = Amigurumi::fromFile(path);
+			item->setData(Qt::UserRole, path);
+			m_ui->listWidget->addItem(item);
+		}
+		catch (std::runtime_error & ex)
+		{
+			qDebug() << "Error adding pattern: " << path << ". " << ex.what();
+		}
 	}
 
+	void LibraryViewWidget::onCustomContextMenuRequested(const QPoint & pos)
+	{
+		QMenu *menu = new QMenu(this);
+		menu->addAction(new QAction(tr("Edit"), this));
+		menu->addAction(new QAction(tr("Rename"), this));
+		menu->addAction(new QAction(tr("Remove"), this));
+		menu->addAction(new QAction(tr("Join.."), this));
+		menu->popup(m_ui->listWidget->viewport()->mapToGlobal(pos));
+	}
 }

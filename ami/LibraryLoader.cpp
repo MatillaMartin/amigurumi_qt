@@ -8,7 +8,15 @@ namespace ami
 
 	QStringList LibraryLoader::getFiles(const QString & path)
 	{
-		QDir directory(path);
-		return directory.entryList(QStringList() << "*.ami", QDir::Files);
+		QFileInfo fileInfo(path);
+		if (fileInfo.isDir())
+		{
+			QDir directory(path);
+			return directory.entryList(QStringList() << "*.ami", QDir::Files);
+		}
+		else
+		{
+			return QStringList() << path;
+		}
 	}
 }
